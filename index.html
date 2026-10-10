@@ -1,0 +1,2128 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHRONOS TYPE-0 | Haute Horlogerie</title>
+    
+    <!-- Meta tags for high-end presentation -->
+    <meta name="description" content="CHRONOS TYPE-0 — A skeletonized flying tourbillon masterpiece. Mechanical perfection engineered in Grade 5 Titanium and 18K 5N Rose Gold.">
+    <meta name="theme-color" content="#050507">
+    
+    <!-- Fonts: Syne, Space Grotesk, Cinzel, Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Inter:wght@200;300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        obsidian: '#050507',
+                        'obsidian-surface': '#0c0d12',
+                        'obsidian-border': '#1e2029',
+                        gold: {
+                            100: '#FDF7E7',
+                            200: '#F8E9C0',
+                            300: '#EDD38C',
+                            400: '#DFBD5E',
+                            500: '#C9A036',
+                            600: '#A37E22',
+                            glow: 'rgba(212, 175, 55, 0.25)'
+                        },
+                        platinum: '#E5E7EB',
+                        ruby: '#E0115F',
+                        titanium: '#8A95A5'
+                    },
+                    fontFamily: {
+                        syne: ['Syne', 'sans-serif'],
+                        cinzel: ['Cinzel', 'serif'],
+                        grotesk: ['Space Grotesk', 'sans-serif'],
+                        inter: ['Inter', 'sans-serif']
+                    },
+                    letterSpacing: {
+                        'widest-luxury': '0.35em',
+                        'ultra-wide': '0.5em'
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    
+    <!-- Three.js r128 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Lenis Smooth Scroll -->
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        ::selection {
+            background: #C9A036;
+            color: #050507;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050507;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2a2c38;
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #C9A036;
+        }
+
+        /* Gold glow effects */
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFF6DA 0%, #DFBD5E 50%, #9D771E 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-border-glow {
+            border: 1px solid rgba(201, 160, 54, 0.25);
+            box-shadow: 0 0 25px -5px rgba(201, 160, 54, 0.15);
+        }
+
+        .glass-panel {
+            background: rgba(12, 13, 18, 0.65);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .glass-panel-gold {
+            background: rgba(18, 17, 14, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(201, 160, 54, 0.2);
+        }
+
+        /* Luxury Custom Cursor Styles */
+        #custom-cursor, #custom-cursor-follower {
+            position: fixed;
+            top: 0;
+            left: 0;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99999;
+            opacity: 0;
+            will-change: transform, opacity;
+            transition: opacity 0.3s ease, width 0.22s cubic-bezier(0.16, 1, 0.3, 1), height 0.22s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        #custom-cursor {
+            width: 8px;
+            height: 8px;
+            background: #DFBD5E;
+            box-shadow: 0 0 12px rgba(223, 189, 94, 0.7);
+        }
+
+        #custom-cursor-follower {
+            width: 38px;
+            height: 38px;
+            border: 1px solid rgba(223, 189, 94, 0.45);
+            background: transparent;
+            z-index: 99998;
+        }
+
+        /* Hover state on clickable and interactive elements */
+        body.cursor-hover #custom-cursor-follower {
+            width: 58px;
+            height: 58px;
+            border-color: #DFBD5E;
+            background: rgba(223, 189, 94, 0.08);
+            box-shadow: 0 0 20px rgba(223, 189, 94, 0.25);
+        }
+        body.cursor-hover #custom-cursor {
+            background: #FFF6DA;
+            box-shadow: 0 0 16px rgba(255, 246, 218, 0.9);
+        }
+
+        /* Active / Click state */
+        body.cursor-clicking #custom-cursor-follower {
+            width: 28px;
+            height: 28px;
+            border-color: #DFBD5E;
+            background: rgba(223, 189, 94, 0.25);
+            box-shadow: 0 0 15px rgba(223, 189, 94, 0.45);
+        }
+        body.cursor-clicking #custom-cursor {
+            width: 5px;
+            height: 5px;
+        }
+
+        /* Dragging 3D state */
+        body.cursor-dragging #custom-cursor-follower {
+            width: 48px;
+            height: 48px;
+            border: 1.5px dashed #DFBD5E;
+            box-shadow: 0 0 22px rgba(223, 189, 94, 0.4);
+        }
+
+        /* When custom cursor is active on desktop, hide the system cursor cleanly */
+        body.has-custom-cursor,
+        body.has-custom-cursor * {
+            cursor: none !important;
+        }
+
+        /* Allow system I-beam for typing in text inputs and textareas */
+        body.has-custom-cursor input[type="text"],
+        body.has-custom-cursor input[type="email"],
+        body.has-custom-cursor textarea {
+            cursor: text !important;
+        }
+
+        /* Subtle grid background */
+        .luxury-grid-bg {
+            background-size: 60px 60px;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+        }
+
+        /* Vignette overlay */
+        .vignette-overlay {
+            background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(5, 5, 7, 0.85) 90%, rgba(5, 5, 7, 1) 100%);
+            pointer-events: none;
+        }
+
+        /* 3D Canvas wrapper */
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Pulse ring */
+        @keyframes pulse-ring {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            50% { transform: scale(1.4); opacity: 0; }
+            100% { transform: scale(0.9); opacity: 0; }
+        }
+        .pulse-animation {
+            animation: pulse-ring 2.4s infinite cubic-bezier(0.4, 0, 0.6, 1);
+        }
+
+        /* Audio visualizer bar animation */
+        @keyframes sound-wave {
+            0%, 100% { height: 4px; }
+            50% { height: 16px; }
+        }
+        .sound-wave-bar {
+            animation: sound-wave 1.2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-obsidian text-platinum font-inter overflow-x-hidden luxury-grid-bg selection:bg-gold-500 selection:text-black">
+
+    <!-- Custom Luxury Cursor -->
+    <div id="custom-cursor"></div>
+    <div id="custom-cursor-follower"></div>
+
+    <!-- Vignette / Atmosphere Overlay -->
+    <div class="vignette-overlay fixed inset-0 z-20 pointer-events-none"></div>
+
+    <!-- WebGL Three.js Container -->
+    <div id="canvas-container">
+        <!-- Progressive Model Loader -->
+        <div id="model-loader" class="absolute inset-0 flex flex-col items-center justify-center bg-obsidian z-50 transition-opacity duration-1000">
+            <div class="relative flex items-center justify-center mb-6">
+                <div class="w-20 h-20 rounded-full border border-gold-500/20 border-t-gold-400 animate-spin"></div>
+                <div class="absolute w-12 h-12 rounded-full border border-gold-500/40 border-b-transparent animate-spin" style="animation-direction: reverse; animation-duration: 2s;"></div>
+                <div class="w-3 h-3 bg-gold-400 rounded-full shadow-[0_0_15px_#DFBD5E]"></div>
+            </div>
+            <div class="font-grotesk text-xs uppercase tracking-widest-luxury text-gold-300 font-semibold mb-2">CALIBER ASSEMBLY INITIALIZING</div>
+            <div class="text-[10px] text-gray-500 font-mono tracking-widest uppercase">THREE.JS 3D ENGINE • SKELETON CALIBER T-01</div>
+            
+            <div class="w-48 h-[2px] bg-white/10 rounded-full mt-6 overflow-hidden">
+                <div id="loading-bar" class="h-full bg-gradient-to-r from-gold-600 via-gold-400 to-gold-200 w-0 transition-all duration-300"></div>
+            </div>
+        </div>
+
+        <!-- Interactive Drag Hint -->
+        <div id="interaction-hint" class="absolute bottom-10 left-1/2 -translate-x-1/2 z-30 pointer-events-none flex items-center gap-3 px-4 py-2 rounded-full glass-panel border border-white/10 text-[11px] font-grotesk tracking-widest text-gold-200/80 uppercase shadow-2xl opacity-0 transition-all duration-700">
+            <span class="w-2 h-2 rounded-full bg-gold-400 animate-ping"></span>
+            <span>Drag to inspect 360° • Scroll to deconstruct Caliber</span>
+        </div>
+    </div>
+
+    <!-- Top Navigation Bar -->
+    <header class="fixed top-0 left-0 w-full z-40 px-6 md:px-12 py-5 flex items-center justify-between transition-all duration-500 backdrop-blur-md bg-obsidian/50 border-b border-white/[0.04]">
+        <div class="flex items-center space-x-6">
+            <a href="#hero" class="group flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full border border-gold-400/40 flex items-center justify-center transition-all duration-300 group-hover:border-gold-400 group-hover:shadow-[0_0_12px_rgba(201,160,54,0.3)]">
+                    <span class="font-cinzel text-xs text-gold-300 font-bold group-hover:text-gold-100">0</span>
+                </div>
+                <div class="flex flex-col">
+                    <span class="font-cinzel tracking-widest-luxury text-sm font-extrabold text-white group-hover:text-gold-200 transition-colors">CHRONOS</span>
+                    <span class="text-[9px] font-mono tracking-[0.4em] text-gold-400/80 uppercase">TYPE-0 TOURBILLON</span>
+                </div>
+            </a>
+        </div>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden lg:flex items-center space-x-9 text-xs font-grotesk uppercase tracking-widest text-gray-400">
+            <a href="#specs" class="hover:text-gold-300 transition-colors py-1 relative group">
+                Specifications
+                <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-gold-400 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a href="#exploded" class="hover:text-gold-300 transition-colors py-1 relative group">
+                Caliber Balance
+                <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-gold-400 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a href="#materials" class="hover:text-gold-300 transition-colors py-1 relative group">
+                Materials
+                <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-gold-400 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a href="#gallery" class="hover:text-gold-300 transition-colors py-1 relative group">
+                Gallery
+                <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-gold-400 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+            <a href="#journal" class="hover:text-gold-300 transition-colors py-1 relative group">
+                Journal
+                <span class="absolute bottom-0 left-0 w-0 h-[1px] bg-gold-400 transition-all duration-300 group-hover:w-full"></span>
+            </a>
+        </nav>
+
+        <!-- Right Side Controls: Sound Synth & Bespoke Allocation -->
+        <div class="flex items-center space-x-3 sm:space-x-4">
+            <!-- Audio Toggle with live Web Audio synth -->
+            <button id="audio-toggle" class="interactive-item group flex items-center space-x-2 px-3 py-2 rounded-full glass-panel border border-white/10 hover:border-gold-500/40 transition-all duration-300 text-[10px] font-mono uppercase tracking-widest text-gray-300" title="Toggle Caliber Sound & Ambient Resonance">
+                <div class="flex items-end gap-[2px] h-3 w-3.5">
+                    <div class="w-[2px] bg-gold-400 sound-wave-bar" style="animation-delay: 0s;"></div>
+                    <div class="w-[2px] bg-gold-400 sound-wave-bar" style="animation-delay: 0.2s;"></div>
+                    <div class="w-[2px] bg-gold-400 sound-wave-bar" style="animation-delay: 0.4s;"></div>
+                </div>
+                <span id="audio-state-text">SOUND [OFF]</span>
+            </button>
+
+            <!-- Reserve Modal Trigger -->
+            <button id="open-reserve-btn" class="interactive-item px-4 sm:px-5 py-2 rounded-full bg-gradient-to-r from-gold-500 to-gold-400 text-obsidian text-xs font-grotesk font-semibold uppercase tracking-widest hover:brightness-110 shadow-[0_0_20px_rgba(201,160,54,0.35)] transition-all duration-300 flex items-center space-x-2">
+                <span>INQUIRE</span>
+                <i data-lucide="arrow-up-right" class="w-3.5 h-3.5"></i>
+            </button>
+
+            <!-- Mobile Menu Toggle Button -->
+            <button id="mobile-menu-btn" class="lg:hidden interactive-item p-2 rounded-full glass-panel border border-white/10 text-gray-300 hover:text-gold-300 transition-colors" aria-label="Toggle Navigation Menu">
+                <i data-lucide="menu" class="w-5 h-5"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-drawer" class="fixed inset-0 z-50 bg-obsidian/95 backdrop-blur-2xl flex flex-col justify-center items-center space-y-7 text-base font-grotesk uppercase tracking-widest opacity-0 pointer-events-none transition-all duration-400">
+        <button id="close-drawer-btn" class="interactive-item absolute top-6 right-6 p-2 rounded-full glass-panel border border-white/10 text-gray-400 hover:text-white" aria-label="Close Menu">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+
+        <div class="flex items-center space-x-3 mb-4">
+            <div class="w-7 h-7 rounded-full border border-gold-400/40 flex items-center justify-center">
+                <span class="font-cinzel text-xs text-gold-300 font-bold">0</span>
+            </div>
+            <span class="font-cinzel text-lg font-bold text-white tracking-widest-luxury">CHRONOS</span>
+        </div>
+
+        <a href="#hero" class="mobile-nav-link text-white hover:text-gold-300 transition-colors">Overview</a>
+        <a href="#specs" class="mobile-nav-link text-gray-300 hover:text-gold-300 transition-colors">Specifications</a>
+        <a href="#exploded" class="mobile-nav-link text-gray-300 hover:text-gold-300 transition-colors">Caliber Balance</a>
+        <a href="#materials" class="mobile-nav-link text-gray-300 hover:text-gold-300 transition-colors">Materials</a>
+        <a href="#gallery" class="mobile-nav-link text-gray-300 hover:text-gold-300 transition-colors">Archival Gallery</a>
+        <a href="#journal" class="mobile-nav-link text-gray-300 hover:text-gold-300 transition-colors">Journal</a>
+
+        <div class="pt-6">
+            <button id="mobile-inquire-btn" class="interactive-item px-8 py-3 rounded-full bg-gradient-to-r from-gold-500 to-gold-400 text-obsidian text-xs font-bold uppercase tracking-widest shadow-[0_0_25px_rgba(201,160,54,0.35)]">
+                Inquire Allocation
+            </button>
+        </div>
+    </div>
+
+    <!-- Mobile Responsive Viewport Mode Switcher (Pill) -->
+    <div class="fixed bottom-6 right-6 z-40 lg:hidden flex items-center p-1 rounded-full glass-panel-gold border border-gold-500/30 shadow-2xl">
+        <button id="switch-view-3d" class="interactive-item px-3.5 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-wider bg-gold-400 text-obsidian font-bold transition-all shadow-sm">
+            3D Caliber
+        </button>
+        <button id="switch-view-gallery" class="interactive-item px-3.5 py-1.5 rounded-full text-[10px] font-mono uppercase tracking-wider text-gray-400 hover:text-white transition-all">
+            Photo Gallery
+        </button>
+    </div>
+
+    <!-- CONTENT LAYERS (Scroll-Driven GSAP Sections) -->
+    <main class="relative z-30 pointer-events-none">
+
+        <!-- ================= SECTION 1: HERO ================= -->
+        <section id="hero" class="relative min-h-screen flex flex-col justify-between px-6 md:px-16 pt-32 pb-16">
+            <!-- Hero Top Header -->
+            <div class="max-w-xl pointer-events-auto">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel border border-gold-500/20 text-gold-300 text-[10px] font-mono tracking-widest uppercase mb-6">
+                    <span class="w-1.5 h-1.5 rounded-full bg-gold-400 animate-pulse"></span>
+                    LIMITED TO 25 PIECES WORLDWIDE
+                </div>
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-syne font-extrabold text-white tracking-tight leading-[0.95] mb-4">
+                    CHRONOS <br>
+                    <span class="gold-gradient-text">TYPE-0</span>
+                </h1>
+                <p class="text-sm md:text-base text-gray-400 font-inter font-light max-w-md leading-relaxed tracking-wide mb-6">
+                    An architectural manifestation of suspended gravity. Skeletonized flying tourbillon movement encased in Grade 5 aerospace titanium and 18K 5N rose gold.
+                </p>
+
+                <!-- Complication Quick Inspection Pills -->
+                <div class="flex flex-wrap items-center gap-2 pt-2">
+                    <span class="text-[10px] font-mono uppercase tracking-widest text-gold-400 mr-1">INSPECT:</span>
+                    <button data-focus="tourbillon" class="focus-pill interactive-item px-3 py-1 rounded-full glass-panel border border-white/10 hover:border-gold-400/50 text-[10px] font-mono text-gray-300 hover:text-gold-200 transition-all">
+                        Tourbillon 60s
+                    </button>
+                    <button data-focus="barrel" class="focus-pill interactive-item px-3 py-1 rounded-full glass-panel border border-white/10 hover:border-gold-400/50 text-[10px] font-mono text-gray-300 hover:text-gold-200 transition-all">
+                        Twin Barrels
+                    </button>
+                    <button data-focus="crown" class="focus-pill interactive-item px-3 py-1 rounded-full glass-panel border border-white/10 hover:border-gold-400/50 text-[10px] font-mono text-gray-300 hover:text-gold-200 transition-all">
+                        Titanium Crown
+                    </button>
+                    <button data-focus="reset" class="focus-pill interactive-item px-3 py-1 rounded-full glass-panel border border-gold-500/30 text-[10px] font-mono text-gold-300 hover:bg-gold-500/10 transition-all">
+                        Reset View
+                    </button>
+                </div>
+            </div>
+
+            <!-- Hero Telemetry & Quick Specs Bar (Bottom) -->
+            <div class="pointer-events-auto flex flex-col md:flex-row md:items-end justify-between gap-6 pt-12 border-t border-white/[0.06]">
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-6 md:gap-12">
+                    <div>
+                        <div class="text-[10px] font-mono uppercase tracking-widest text-gray-500 mb-1">ESCAPEMENT</div>
+                        <div class="text-sm font-grotesk font-semibold text-white tracking-wide">60s Flying Tourbillon</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] font-mono uppercase tracking-widest text-gray-500 mb-1">FREQUENCY</div>
+                        <div class="text-sm font-grotesk font-semibold text-white tracking-wide">28,800 VPH (4Hz)</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] font-mono uppercase tracking-widest text-gray-500 mb-1">POWER RESERVE</div>
+                        <div class="text-sm font-grotesk font-semibold text-white tracking-wide">72 Hours Twin Barrel</div>
+                    </div>
+                    <div>
+                        <div class="text-[10px] font-mono uppercase tracking-widest text-gray-500 mb-1">ARCHITECTURE</div>
+                        <div class="text-sm font-grotesk font-semibold text-gold-300 tracking-wide">Grade 5 Titanium</div>
+                    </div>
+                </div>
+
+                <!-- Scroll Down Indicator -->
+                <div class="flex items-center space-x-3 text-xs font-mono tracking-widest text-gray-400 uppercase">
+                    <span>EXPLORE CALIBER</span>
+                    <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center animate-bounce">
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-gold-400"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= SECTION 2: SPECIFICATIONS ================= -->
+        <section id="specs" class="relative min-h-[140vh] flex flex-col justify-center px-6 md:px-16 py-28">
+            <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left Details Content -->
+                <div class="lg:col-span-5 pointer-events-auto space-y-8">
+                    <div>
+                        <div class="text-[11px] font-mono tracking-ultra-wide text-gold-400 uppercase mb-3">01 // ENGINEERING EXCELLENCE</div>
+                        <h2 class="text-4xl md:text-5xl font-syne font-bold text-white tracking-tight leading-none mb-4">
+                            PRECISION <br>UNVEILED.
+                        </h2>
+                        <p class="text-sm text-gray-400 font-light leading-relaxed">
+                            Every component is hand-finished with anglage, mirror polishing, and micro-blasted circular graining. Nothing is concealed; the heartbeat of time is laid bare.
+                        </p>
+                    </div>
+
+                    <!-- Animated Feature Cards -->
+                    <div class="space-y-4">
+                        <div class="spec-card glass-panel p-5 rounded-2xl border border-white/5 hover:border-gold-500/30 transition-all duration-300 group">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-mono text-xs text-gold-400 font-semibold tracking-wider">CALIBER T-01 SKELETON</span>
+                                <span class="text-[10px] font-mono text-gray-500 uppercase">MANUAL WIND</span>
+                            </div>
+                            <h4 class="text-base font-grotesk font-semibold text-white group-hover:text-gold-200 transition-colors">248 Hand-Decorated Components</h4>
+                            <p class="text-xs text-gray-400 mt-1 font-light">Custom open-worked bridges formed from solid blocks of 18K 5N rose gold with titanium baseplate.</p>
+                        </div>
+
+                        <div class="spec-card glass-panel p-5 rounded-2xl border border-white/5 hover:border-gold-500/30 transition-all duration-300 group">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-mono text-xs text-gold-400 font-semibold tracking-wider">DIMENSIONS & DEPTH</span>
+                                <span class="text-[10px] font-mono text-gray-500 uppercase">42MM PROFILE</span>
+                            </div>
+                            <h4 class="text-base font-grotesk font-semibold text-white group-hover:text-gold-200 transition-colors">10.8mm Thickness • 50m Water Resistance</h4>
+                            <p class="text-xs text-gray-400 mt-1 font-light">Ultra-slim ergonomic case contoured to hug the wrist with seamless integrated sapphire crystal lugs.</p>
+                        </div>
+
+                        <div class="spec-card glass-panel p-5 rounded-2xl border border-white/5 hover:border-gold-500/30 transition-all duration-300 group">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="font-mono text-xs text-gold-400 font-semibold tracking-wider">JEWELS & BEARINGS</span>
+                                <span class="text-[10px] font-mono text-gray-500 uppercase">31 SYNTHETIC RUBIES</span>
+                            </div>
+                            <h4 class="text-base font-grotesk font-semibold text-white group-hover:text-gold-200 transition-colors">Frictionless Escapement Rotation</h4>
+                            <p class="text-xs text-gray-400 mt-1 font-light">Olive-drilled chatons set directly into gold bridges for minimal kinetic loss and supreme longevity.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Space: Reserved for 3D Camera Focus in Center/Right -->
+                <div class="lg:col-span-7 flex flex-col justify-end items-end pointer-events-auto">
+                    <!-- Hotspots overlay cues -->
+                    <div class="glass-panel p-6 rounded-2xl border border-gold-500/20 max-w-sm ml-auto">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-3 h-3 rounded-full bg-gold-400 shadow-[0_0_10px_#DFBD5E]"></div>
+                            <span class="text-xs font-mono uppercase tracking-widest text-gold-200">ACTIVE TELEMETRY</span>
+                        </div>
+                        <p class="text-xs text-gray-400 font-light leading-relaxed mb-4">
+                            360° orbital freedom active. Scroll down to inspect the exploded kinematics and layered components in three-dimensional space.
+                        </p>
+                        <div class="flex items-center justify-between text-[11px] font-mono text-gray-500 pt-3 border-t border-white/10">
+                            <span>SERIAL CODE</span>
+                            <span class="text-white font-semibold">T0-2026-CH</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= SECTION 3: CALIBER BALANCE (EXPLODED VIEW) ================= -->
+        <section id="exploded" class="relative min-h-[160vh] flex flex-col justify-center px-6 md:px-16 py-32">
+            <div class="max-w-6xl mx-auto w-full pointer-events-auto">
+                
+                <!-- Section Header Banner -->
+                <div class="text-center max-w-2xl mx-auto mb-16">
+                    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-gold-500/20 text-gold-300 text-[11px] font-mono tracking-widest uppercase mb-4">
+                        <span class="w-2 h-2 rounded-full bg-gold-400 pulse-animation"></span>
+                        EXPLODED KINEMATIC VIEW
+                    </div>
+                    <h2 class="text-4xl md:text-6xl font-syne font-bold text-white tracking-tight leading-tight mb-4">
+                        CALIBER BALANCE & <br><span class="gold-gradient-text">DECONSTRUCTION</span>
+                    </h2>
+                    <p class="text-sm md:text-base text-gray-400 font-light leading-relaxed">
+                        Scroll through the deconstructed layers of CHRONOS TYPE-0. Watch the crystal dome, chapter ring, gear train, flying tourbillon carriage, and titanium chassis expand in three-dimensional space.
+                    </p>
+                </div>
+
+                <!-- Floating Exploded Labels Grid (Controlled by ScrollTrigger) -->
+                <div id="exploded-annotations" class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-20">
+                    <div class="exploded-card glass-panel-gold p-6 rounded-2xl transition-all duration-500 hover:scale-[1.02]">
+                        <div class="text-[10px] font-mono text-gold-400 tracking-widest uppercase mb-1">LAYER 01 // EXTERIOR</div>
+                        <h3 class="text-lg font-grotesk font-bold text-white mb-2">Curved Double Sapphire</h3>
+                        <p class="text-xs text-gray-300 font-light leading-relaxed">
+                            Dual anti-reflective multi-layer coating offering crystal transparency with 9 Mohs diamond-grade scratch resistance.
+                        </p>
+                    </div>
+
+                    <div class="exploded-card glass-panel-gold p-6 rounded-2xl transition-all duration-500 hover:scale-[1.02]">
+                        <div class="text-[10px] font-mono text-gold-400 tracking-widest uppercase mb-1">LAYER 02 // KINEMATICS</div>
+                        <h3 class="text-lg font-grotesk font-bold text-white mb-2">Rose-Gold Gear Train</h3>
+                        <p class="text-xs text-gray-300 font-light leading-relaxed">
+                            Involute gear tooth profiles calculated to micro-millimeter precision for unhindered 72-hour continuous torque delivery.
+                        </p>
+                    </div>
+
+                    <div class="exploded-card glass-panel-gold p-6 rounded-2xl transition-all duration-500 hover:scale-[1.02]">
+                        <div class="text-[10px] font-mono text-gold-400 tracking-widest uppercase mb-1">LAYER 03 // GRAVITY COUNTER</div>
+                        <h3 class="text-lg font-grotesk font-bold text-white mb-2">Flying Tourbillon Cage</h3>
+                        <p class="text-xs text-gray-300 font-light leading-relaxed">
+                            Ultra-lightweight titanium cage weighing mere 0.28 grams, rotating once every 60 seconds to counteract Earth's gravitational bias.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= SECTION 4: MATERIALS SHOWCASE ================= -->
+        <section id="materials" class="relative min-h-[140vh] flex flex-col justify-center px-6 md:px-16 py-28">
+            <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Left: Material Selector & Explanations -->
+                <div class="lg:col-span-5 pointer-events-auto space-y-8">
+                    <div>
+                        <div class="text-[11px] font-mono tracking-ultra-wide text-gold-400 uppercase mb-3">03 // METALLURGICAL ARTISTRY</div>
+                        <h2 class="text-4xl md:text-5xl font-syne font-bold text-white tracking-tight leading-none mb-4">
+                            FORGED IN <br><span class="gold-gradient-text">NOBILITY.</span>
+                        </h2>
+                        <p class="text-sm text-gray-400 font-light leading-relaxed">
+                            Selected for unyielding durability and optical radiance. Touch the material cards to shift the 3D lighting and highlight each proprietary texture.
+                        </p>
+                    </div>
+
+                    <!-- Material Interactive Tabs -->
+                    <div class="space-y-4" id="material-tabs">
+                        <button data-material="gold" class="material-btn active w-full text-left glass-panel-gold p-5 rounded-2xl border border-gold-500/40 transition-all duration-300 flex items-center justify-between group">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-gold-600 via-gold-400 to-amber-200 border border-gold-300/60 shadow-lg flex items-center justify-center">
+                                    <i data-lucide="sparkles" class="w-5 h-5 text-obsidian"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-grotesk font-bold text-white group-hover:text-gold-200">18K 5N Rose Gold Movement</h4>
+                                    <p class="text-[11px] text-gray-400 font-light">75% pure gold alloyed with copper and silver for permanent warm hue.</p>
+                                </div>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-gold-400"></i>
+                        </button>
+
+                        <button data-material="titanium" class="material-btn w-full text-left glass-panel p-5 rounded-2xl border border-white/5 hover:border-gold-500/30 transition-all duration-300 flex items-center justify-between group">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-gray-700 via-slate-500 to-gray-300 border border-white/20 shadow-lg flex items-center justify-center">
+                                    <i data-lucide="shield" class="w-5 h-5 text-white"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-grotesk font-bold text-white group-hover:text-gold-200">Grade 5 Aerospace Titanium</h4>
+                                    <p class="text-[11px] text-gray-400 font-light">Ti-6Al-4V alloy boasting exceptional strength-to-weight and biocompatibility.</p>
+                                </div>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-gray-500 group-hover:text-gold-400"></i>
+                        </button>
+
+                        <button data-material="sapphire" class="material-btn w-full text-left glass-panel p-5 rounded-2xl border border-white/5 hover:border-gold-500/30 transition-all duration-300 flex items-center justify-between group">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-900/40 via-blue-400/30 to-white/40 border border-cyan-400/40 shadow-lg backdrop-blur-md flex items-center justify-center">
+                                    <i data-lucide="diamond" class="w-5 h-5 text-cyan-200"></i>
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-grotesk font-bold text-white group-hover:text-gold-200">Corundum Sapphire Crystal</h4>
+                                    <p class="text-[11px] text-gray-400 font-light">Synthetic single-crystal Al2O3 with 9 Mohs surface hardness.</p>
+                                </div>
+                            </div>
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-gray-500 group-hover:text-gold-400"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right: Material Details Stats -->
+                <div class="lg:col-span-7 flex flex-col justify-end pointer-events-auto">
+                    <div class="glass-panel p-8 rounded-3xl border border-white/10 max-w-lg ml-auto space-y-6">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-mono text-gold-400 uppercase tracking-widest">MATERIAL BENCHMARK</span>
+                            <span class="text-xs font-mono text-gray-400">HAUTE HORLOGERIE SPEC</span>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between text-xs font-grotesk mb-1">
+                                    <span class="text-gray-300">Vickers Hardness (HV)</span>
+                                    <span class="text-gold-300 font-semibold font-mono">2,200 HV</span>
+                                </div>
+                                <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gold-400 w-[95%]"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs font-grotesk mb-1">
+                                    <span class="text-gray-300">Specific Density Ratio</span>
+                                    <span class="text-gold-300 font-semibold font-mono">4.43 g/cm³</span>
+                                </div>
+                                <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gold-400 w-[70%]"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="flex justify-between text-xs font-grotesk mb-1">
+                                    <span class="text-gray-300">Thermal Expansion Resistance</span>
+                                    <span class="text-gold-300 font-semibold font-mono">8.6 × 10⁻⁶ / K</span>
+                                </div>
+                                <div class="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+                                    <div class="h-full bg-gold-400 w-[88%]"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4 border-t border-white/10 flex items-center justify-between">
+                            <div class="text-[11px] text-gray-400">Guaranteed hand-finished in Vallée de Joux</div>
+                            <div class="w-2 h-2 rounded-full bg-emerald-400"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= SECTION 5: ARCHIVAL GALLERY (RESPONSIVE & MOBILE FALLBACK) ================= -->
+        <section id="gallery" class="relative min-h-screen flex flex-col justify-center px-6 md:px-16 py-32 bg-obsidian-surface/60 border-t border-white/[0.04]">
+            <div class="max-w-7xl mx-auto w-full pointer-events-auto">
+                
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel border border-gold-500/20 text-gold-300 text-[10px] font-mono tracking-widest uppercase mb-3">
+                            <span class="w-1.5 h-1.5 rounded-full bg-gold-400"></span>
+                            HAUTE HORLOGERIE ARCHIVE
+                        </div>
+                        <h2 class="text-4xl md:text-5xl font-syne font-bold text-white tracking-tight">
+                            CURATED PHOTO <br><span class="gold-gradient-text">GALLERY</span>
+                        </h2>
+                    </div>
+                    <p class="text-sm text-gray-400 font-light max-w-md leading-relaxed">
+                        High-resolution archival macro photography capturing the microscopic tolerances, sapphire reflections, and hand-chamfered bevels of CHRONOS TYPE-0.
+                    </p>
+                </div>
+
+                <!-- Gallery 6-Card Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Image Card 1 -->
+                    <div class="gallery-card group relative h-80 rounded-3xl overflow-hidden glass-panel border border-white/10 cursor-pointer" data-img="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=1200&auto=format&fit=crop" data-title="Tourbillon 60s Escapement" data-subtitle="Grade 5 Titanium carriage weighing 0.28g floating over ruby chaton.">
+                        <img src="https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?q=80&w=800&auto=format&fit=crop" alt="Tourbillon Escapement" class="w-full h-full object-cover filter brightness-90 group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5 flex justify-between items-end">
+                            <div>
+                                <span class="text-[9px] font-mono text-gold-400 uppercase tracking-widest">MACRO 01</span>
+                                <h4 class="text-base font-grotesk font-bold text-white">Tourbillon Escapement</h4>
+                            </div>
+                            <div class="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-gold-400 group-hover:text-obsidian transition-colors">
+                                <i data-lucide="maximize-2" class="w-4 h-4"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image Card 2 -->
+                    <div class="gallery-card group relative h-80 rounded-3xl overflow-hidden glass-panel border border-white/10 cursor-pointer" data-img="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1200&auto=format&fit=crop" data-title="18K Rose Gold Bridges" data-subtitle="Hand-filed anglage with micro-blasted circular graining.">
+                        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=800&auto=format&fit=crop" alt="Rose Gold Bridges" class="w-full h-full object-cover filter brightness-90 group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5 flex justify-between items-end">
+                            <div>
+                                <span class="text-[9px] font-mono text-gold-400 uppercase tracking-widest">MACRO 02</span>
+                                <h4 class="text-base font-grotesk font-bold text-white">Openworked Movement</h4>
+                            </div>
+                            <div class="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-gold-400 group-hover:text-obsidian transition-colors">
+                                <i data-lucide="maximize-2" class="w-4 h-4"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image Card 3 -->
+                    <div class="gallery-card group relative h-80 rounded-3xl overflow-hidden glass-panel border border-white/10 cursor-pointer" data-img="https://images.unsplash.com/photo-1547996160-71dfabb1d898?q=80&w=1200&auto=format&fit=crop" data-title="Master Watchmaker Bench" data-subtitle="Over 120 hours of individual micromechanical assembly in Geneva.">
+                        <img src="https://images.unsplash.com/photo-1547996160-71dfabb1d898?q=80&w=800&auto=format&fit=crop" alt="Watchmaking Bench" class="w-full h-full object-cover filter brightness-90 group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5 flex justify-between items-end">
+                            <div>
+                                <span class="text-[9px] font-mono text-gold-400 uppercase tracking-widest">ATELIER 03</span>
+                                <h4 class="text-base font-grotesk font-bold text-white">Hand Adjustment</h4>
+                            </div>
+                            <div class="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-gold-400 group-hover:text-obsidian transition-colors">
+                                <i data-lucide="maximize-2" class="w-4 h-4"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image Card 4 -->
+                    <div class="gallery-card group relative h-80 rounded-3xl overflow-hidden glass-panel border border-white/10 cursor-pointer" data-img="https://images.unsplash.com/photo-1508057198894-247b23fe5ade?q=80&w=1200&auto=format&fit=crop" data-title="Caseback Architecture" data-subtitle="Dual curved anti-reflective sapphire showing twin-barrel gear train.">
+                        <img src="https://images.unsplash.com/photo-1508057198894-247b23fe5ade?q=80&w=800&auto=format&fit=crop" alt="Watch Caseback" class="w-full h-full object-cover filter brightness-90 group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5 flex justify-between items-end">
+                            <div>
+                                <span class="text-[9px] font-mono text-gold-400 uppercase tracking-widest">PERSPECTIVE 04</span>
+                                <h4 class="text-base font-grotesk font-bold text-white">Sapphire Exhibition Case</h4>
+                            </div>
+                            <div class="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-gold-400 group-hover:text-obsidian transition-colors">
+                                <i data-lucide="maximize-2" class="w-4 h-4"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image Card 5 -->
+                    <div class="gallery-card group relative h-80 rounded-3xl overflow-hidden glass-panel border border-white/10 cursor-pointer" data-img="https://images.unsplash.com/photo-1533139502658-0198f920d8e8?q=80&w=1200&auto=format&fit=crop" data-title="Dark Obsidian Monolith" data-subtitle="Ceramic bezel with 8 recessed rose-gold hex screws.">
+                        <img src="https://images.unsplash.com/photo-1533139502658-0198f920d8e8?q=80&w=800&auto=format&fit=crop" alt="Ceramic Bezel" class="w-full h-full object-cover filter brightness-90 group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5 flex justify-between items-end">
+                            <div>
+                                <span class="text-[9px] font-mono text-gold-400 uppercase tracking-widest">MATERIAL 05</span>
+                                <h4 class="text-base font-grotesk font-bold text-white">Ceramic & Titanium</h4>
+                            </div>
+                            <div class="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-gold-400 group-hover:text-obsidian transition-colors">
+                                <i data-lucide="maximize-2" class="w-4 h-4"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Image Card 6 -->
+                    <div class="gallery-card group relative h-80 rounded-3xl overflow-hidden glass-panel border border-white/10 cursor-pointer" data-img="https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=1200&auto=format&fit=crop" data-title="Ergonomic Wrist Silhouette" data-subtitle="42mm diameter contoured profile engineered for weightless comfort.">
+                        <img src="https://images.unsplash.com/photo-1524805444758-089113d48a6d?q=80&w=800&auto=format&fit=crop" alt="Wrist Profile" class="w-full h-full object-cover filter brightness-90 group-hover:scale-105 transition-transform duration-700">
+                        <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/20 to-transparent"></div>
+                        <div class="absolute bottom-5 left-5 right-5 flex justify-between items-end">
+                            <div>
+                                <span class="text-[9px] font-mono text-gold-400 uppercase tracking-widest">HOROLOGY 06</span>
+                                <h4 class="text-base font-grotesk font-bold text-white">Wrist Presence</h4>
+                            </div>
+                            <div class="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white group-hover:bg-gold-400 group-hover:text-obsidian transition-colors">
+                                <i data-lucide="maximize-2" class="w-4 h-4"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= SECTION 6: JOURNAL (EDITORIAL) ================= -->
+        <section id="journal" class="relative min-h-screen flex flex-col justify-center px-6 md:px-16 py-32 bg-gradient-to-b from-transparent via-obsidian-surface/60 to-obsidian">
+            <div class="max-w-7xl mx-auto w-full pointer-events-auto">
+                
+                <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+                    <div>
+                        <div class="text-[11px] font-mono tracking-ultra-wide text-gold-400 uppercase mb-3">05 // CHRONICLES OF TIME</div>
+                        <h2 class="text-4xl md:text-5xl font-syne font-bold text-white tracking-tight">
+                            THE HOROLOGICAL <br><span class="gold-gradient-text">JOURNAL</span>
+                        </h2>
+                    </div>
+                    <p class="text-sm text-gray-400 font-light max-w-md">
+                        Essays on micro-mechanical engineering, aesthetics of the skeletonized movement, and the philosophy of mechanical permanence.
+                    </p>
+                </div>
+
+                <!-- Journal Articles Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    
+                    <!-- Article 1 -->
+                    <article class="journal-card group glass-panel rounded-3xl overflow-hidden border border-white/5 hover:border-gold-500/30 transition-all duration-500 flex flex-col justify-between">
+                        <div class="relative h-60 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=900&auto=format&fit=crop" alt="Mechanical Watch Movement" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 filter grayscale contrast-125 brightness-90 group-hover:grayscale-0">
+                            <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent"></div>
+                            <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-obsidian/80 backdrop-blur-md border border-white/10 text-[10px] font-mono text-gold-300 uppercase">PHILOSOPHY</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 text-[11px] font-mono text-gray-400 mb-3">
+                                <span>OCT 2026</span>
+                                <span>•</span>
+                                <span>6 MIN READ</span>
+                            </div>
+                            <h3 class="text-lg font-grotesk font-bold text-white mb-3 group-hover:text-gold-200 transition-colors">
+                                The Architecture of Zero Gravity: Reimagining the Tourbillon
+                            </h3>
+                            <p class="text-xs text-gray-400 font-light leading-relaxed mb-4">
+                                How Abraham-Louis Breguet’s 1801 breakthrough was completely re-architected for three-dimensional kinetic freedom in modern micro-mechanics.
+                            </p>
+                            <div class="inline-flex items-center gap-2 text-xs font-mono text-gold-400 uppercase tracking-widest group-hover:gap-3 transition-all">
+                                <span>READ ESSAY</span>
+                                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Article 2 -->
+                    <article class="journal-card group glass-panel rounded-3xl overflow-hidden border border-white/5 hover:border-gold-500/30 transition-all duration-500 flex flex-col justify-between">
+                        <div class="relative h-60 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1547996160-71dfabb1d898?q=80&w=900&auto=format&fit=crop" alt="Watchmaker at Work" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 filter grayscale contrast-125 brightness-90 group-hover:grayscale-0">
+                            <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent"></div>
+                            <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-obsidian/80 backdrop-blur-md border border-white/10 text-[10px] font-mono text-gold-300 uppercase">CRAFTSMANSHIP</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 text-[11px] font-mono text-gray-400 mb-3">
+                                <span>SEP 2026</span>
+                                <span>•</span>
+                                <span>8 MIN READ</span>
+                            </div>
+                            <h3 class="text-lg font-grotesk font-bold text-white mb-3 group-hover:text-gold-200 transition-colors">
+                                Anglage & Black Polish: Over 120 Hours of Hand Finishing
+                            </h3>
+                            <p class="text-xs text-gray-400 font-light leading-relaxed mb-4">
+                                Inside our atelier in Le Brassus, master artisans use gentian wood and diamond paste to attain optical mirror reflection on microscopic titanium bevels.
+                            </p>
+                            <div class="inline-flex items-center gap-2 text-xs font-mono text-gold-400 uppercase tracking-widest group-hover:gap-3 transition-all">
+                                <span>READ ESSAY</span>
+                                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Article 3 -->
+                    <article class="journal-card group glass-panel rounded-3xl overflow-hidden border border-white/5 hover:border-gold-500/30 transition-all duration-500 flex flex-col justify-between">
+                        <div class="relative h-60 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1508057198894-247b23fe5ade?q=80&w=900&auto=format&fit=crop" alt="Luxury Timepiece Detail" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 filter grayscale contrast-125 brightness-90 group-hover:grayscale-0">
+                            <div class="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-transparent"></div>
+                            <span class="absolute top-4 left-4 px-3 py-1 rounded-full bg-obsidian/80 backdrop-blur-md border border-white/10 text-[10px] font-mono text-gold-300 uppercase">METALLURGY</span>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center gap-3 text-[11px] font-mono text-gray-400 mb-3">
+                                <span>AUG 2026</span>
+                                <span>•</span>
+                                <span>5 MIN READ</span>
+                            </div>
+                            <h3 class="text-lg font-grotesk font-bold text-white mb-3 group-hover:text-gold-200 transition-colors">
+                                The 5N Rose Gold Standard: Why Color Stability Matters
+                            </h3>
+                            <p class="text-xs text-gray-400 font-light leading-relaxed mb-4">
+                                Balancing silver, copper, and 24K bullion to engineer a warm rose tone immune to skin moisture, oxidation, and centuries of exposure.
+                            </p>
+                            <div class="inline-flex items-center gap-2 text-xs font-mono text-gold-400 uppercase tracking-widest group-hover:gap-3 transition-all">
+                                <span>READ ESSAY</span>
+                                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ================= SECTION 7: FOOTER & ALLOCATION BANNER ================= -->
+        <footer class="relative z-30 pointer-events-auto px-6 md:px-16 pt-24 pb-12 border-t border-white/10 bg-obsidian">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- Allocation CTA Box -->
+                <div class="glass-panel-gold p-8 md:p-14 rounded-3xl border border-gold-500/30 flex flex-col md:flex-row items-center justify-between gap-8 mb-20">
+                    <div>
+                        <div class="text-[11px] font-mono text-gold-400 tracking-widest uppercase mb-2">PRIVATE COMMISSIONS 2026/2027</div>
+                        <h3 class="text-3xl md:text-5xl font-syne font-bold text-white">SECURE YOUR ALLOCATION</h3>
+                        <p class="text-sm text-gray-300 font-light max-w-lg mt-2">
+                            Only twenty-five CHRONOS TYPE-0 pieces are handcrafted annually. Each owner receives bespoke rotor engraving and lifetime atelier service.
+                        </p>
+                    </div>
+                    <button id="footer-reserve-btn" class="interactive-item px-8 py-4 rounded-full bg-gradient-to-r from-gold-500 via-gold-400 to-gold-200 text-obsidian text-sm font-grotesk font-bold uppercase tracking-widest hover:brightness-110 shadow-[0_0_30px_rgba(201,160,54,0.4)] transition-all flex items-center space-x-3">
+                        <span>REQUEST APPOINTMENT</span>
+                        <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+                <!-- Footer Navigation & Atelier Coordinates -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16 text-xs text-gray-400 font-light">
+                    <div>
+                        <div class="flex items-center space-x-3 mb-4">
+                            <span class="font-cinzel text-lg text-white font-bold">CHRONOS</span>
+                            <span class="text-[10px] font-mono text-gold-400 tracking-widest">HAUTE HORLOGERIE</span>
+                        </div>
+                        <p class="leading-relaxed">
+                            Independent horological laboratory based in Geneva, Switzerland. Bridging avant-garde skeletonization with traditional chronometric mastery.
+                        </p>
+                    </div>
+
+                    <div>
+                        <div class="text-white font-grotesk font-bold tracking-widest uppercase text-xs mb-4">ATELIERS</div>
+                        <ul class="space-y-2 font-mono text-[11px]">
+                            <li>GENEVA // Rue du Rhône 42</li>
+                            <li>TOKYO // Ginza 6-Chome</li>
+                            <li>NEW YORK // Madison Avenue 740</li>
+                            <li>DUBAI // DIFC Gate Village</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <div class="text-white font-grotesk font-bold tracking-widest uppercase text-xs mb-4">SPECIFICATIONS</div>
+                        <ul class="space-y-2 font-mono text-[11px]">
+                            <li>CALIBER: T-01 Skeleton Tourbillon</li>
+                            <li>FREQUENCY: 28,800 VPH</li>
+                            <li>POWER: 72 Hours Twin Barrel</li>
+                            <li>WEIGHT: 68 Grams (w/ Strap)</li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <div class="text-white font-grotesk font-bold tracking-widest uppercase text-xs mb-4">LEGAL & CERTIFICATES</div>
+                        <ul class="space-y-2 text-[11px]">
+                            <li>Poinçon de Genève Certified</li>
+                            <li>COSC Chronometer Testing</li>
+                            <li>5-Year International Atelier Warranty</li>
+                            <li>NFT Digital Certificate of Authenticity</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Bottom Copyright -->
+                <div class="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-white/[0.05] text-[11px] font-mono text-gray-500">
+                    <div>© 2026 CHRONOS TIMEPIECES MANUFACTURE S.A. ALL RIGHTS RESERVED.</div>
+                    <div class="mt-4 sm:mt-0 flex space-x-6">
+                        <a href="#" class="hover:text-gold-400 transition-colors">PRIVACY POLICY</a>
+                        <a href="#" class="hover:text-gold-400 transition-colors">TERMS OF COMMISSION</a>
+                        <a href="#" class="hover:text-gold-400 transition-colors">SECURITY AUDIT</a>
+                    </div>
+                </div>
+
+            </div>
+        </footer>
+
+    </main>
+
+    <!-- ================= BESPOKE INQUIRY MODAL ================= -->
+    <div id="reserve-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-xl opacity-0 pointer-events-none transition-all duration-400">
+        <div class="relative w-full max-w-xl glass-panel-gold p-8 md:p-10 rounded-3xl border border-gold-500/40 shadow-[0_0_50px_rgba(0,0,0,0.9)] max-h-[90vh] overflow-y-auto">
+            
+            <button id="close-modal-btn" class="interactive-item absolute top-6 right-6 w-9 h-9 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:border-gold-400 transition-all">
+                <i data-lucide="x" class="w-4 h-4"></i>
+            </button>
+
+            <div class="mb-6">
+                <div class="text-[10px] font-mono text-gold-400 uppercase tracking-widest mb-1">CONFIDENTIAL ALLOCATION</div>
+                <h3 class="text-2xl md:text-3xl font-syne font-bold text-white">RESERVE CHRONOS TYPE-0</h3>
+                <p class="text-xs text-gray-300 font-light mt-1">
+                    Please submit your preferences. Our Concierge Director will reach out within 24 hours.
+                </p>
+            </div>
+
+            <form id="inquiry-form" class="space-y-4 text-xs font-grotesk">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-400 uppercase tracking-wider text-[10px] font-mono mb-1">First & Last Name</label>
+                        <input type="text" required placeholder="Lord Sterling Archer" class="w-full px-4 py-3 rounded-xl bg-obsidian/70 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-gold-400 transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 uppercase tracking-wider text-[10px] font-mono mb-1">Email Address</label>
+                        <input type="email" required placeholder="s.archer@domain.com" class="w-full px-4 py-3 rounded-xl bg-obsidian/70 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-gold-400 transition-colors">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-gray-400 uppercase tracking-wider text-[10px] font-mono mb-1">City / Country</label>
+                        <input type="text" placeholder="Zurich, Switzerland" class="w-full px-4 py-3 rounded-xl bg-obsidian/70 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-gold-400 transition-colors">
+                    </div>
+                    <div>
+                        <label class="block text-gray-400 uppercase tracking-wider text-[10px] font-mono mb-1">Preferred Atelier</label>
+                        <select class="w-full px-4 py-3 rounded-xl bg-obsidian/70 border border-white/10 text-white focus:outline-none focus:border-gold-400 transition-colors">
+                            <option>Geneva Salon (Headquarters)</option>
+                            <option>Tokyo Ginza Atelier</option>
+                            <option>New York Private Lounge</option>
+                            <option>Dubai VIP Suite</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-gray-400 uppercase tracking-wider text-[10px] font-mono mb-1">Strap & Finish Customization</label>
+                    <select class="w-full px-4 py-3 rounded-xl bg-obsidian/70 border border-white/10 text-white focus:outline-none focus:border-gold-400 transition-colors">
+                        <option>Matte Obsidian Alligator Leather with 18K Gold Buckle</option>
+                        <option>Integrated Grade 5 Titanium Mesh Bracelet</option>
+                        <option>Bespoke Vulcanized FKM Rubber with Gold Clasp</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-gray-400 uppercase tracking-wider text-[10px] font-mono mb-1">Bespoke Engraving / Notes</label>
+                    <textarea rows="3" placeholder="Specify desired caseback monogram or private viewing requests..." class="w-full px-4 py-3 rounded-xl bg-obsidian/70 border border-white/10 text-white placeholder-gray-600 focus:outline-none focus:border-gold-400 transition-colors"></textarea>
+                </div>
+
+                <div class="pt-2">
+                    <button type="submit" class="w-full py-4 rounded-xl bg-gradient-to-r from-gold-500 via-gold-400 to-gold-200 text-obsidian text-xs font-bold uppercase tracking-widest hover:brightness-110 shadow-[0_0_25px_rgba(201,160,54,0.3)] transition-all">
+                        SUBMIT CONFIDENTIAL REQUEST
+                    </button>
+                </div>
+            </form>
+
+            <div id="form-success" class="hidden text-center py-8">
+                <div class="w-16 h-16 rounded-full bg-gold-400/20 border border-gold-400 mx-auto flex items-center justify-center mb-4">
+                    <i data-lucide="check" class="w-8 h-8 text-gold-300"></i>
+                </div>
+                <h4 class="text-xl font-syne font-bold text-white mb-2">COMMISSION REQUEST RECEIVED</h4>
+                <p class="text-xs text-gray-300 font-light max-w-sm mx-auto">
+                    Your allocation request for CHRONOS TYPE-0 has been registered. Our Chief Horologist will connect with you securely.
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ================= GALLERY LIGHTBOX MODAL ================= -->
+    <div id="gallery-lightbox" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-2xl opacity-0 pointer-events-none transition-all duration-400">
+        <button id="close-lightbox-btn" class="interactive-item absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-gold-400 hover:text-black transition-colors" aria-label="Close Lightbox">
+            <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+        <div class="max-w-4xl w-full flex flex-col items-center">
+            <div class="relative w-full max-h-[75vh] overflow-hidden rounded-2xl border border-white/10 mb-4 flex items-center justify-center bg-obsidian">
+                <img id="lightbox-img" src="" alt="High Resolution Watch Capture" class="max-w-full max-h-[75vh] object-contain">
+            </div>
+            <div class="text-center">
+                <h3 id="lightbox-title" class="text-lg font-grotesk font-bold text-white"></h3>
+                <p id="lightbox-subtitle" class="text-xs text-gray-400 font-light mt-1"></p>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ================= JAVASCRIPT CODE ================= -->
+    <script>
+        // 1. Initialize Lucide Icons
+        lucide.createIcons();
+
+        // 2. Smooth Scroll Setup with Lenis
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+            infinite: false,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // Sync Lenis with GSAP ScrollTrigger
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => {
+            lenis.raf(time * 1000);
+        });
+        gsap.ticker.lagSmoothing(0);
+
+        // 3. Custom Luxury Cursor Implementation
+        const cursor = document.getElementById('custom-cursor');
+        const cursorFollower = document.getElementById('custom-cursor-follower');
+
+        let mouseX = -100;
+        let mouseY = -100;
+        let followerX = -100;
+        let followerY = -100;
+        let isCursorVisible = false;
+        let hasInitializedCursor = false;
+
+        function updateCursorPositions() {
+            if (isCursorVisible) {
+                // Immediate hardware-accelerated positioning for the dot (Zero lag, perfectly centered)
+                cursor.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+
+                // Smooth fluid lerp for the luxury follower ring
+                followerX += (mouseX - followerX) * 0.18;
+                followerY += (mouseY - followerY) * 0.18;
+                cursorFollower.style.transform = `translate3d(${followerX}px, ${followerY}px, 0) translate(-50%, -50%)`;
+            }
+            requestAnimationFrame(updateCursorPositions);
+        }
+        requestAnimationFrame(updateCursorPositions);
+
+        function showCursor() {
+            if (!isCursorVisible) {
+                isCursorVisible = true;
+                cursor.style.opacity = '1';
+                cursorFollower.style.opacity = '1';
+                document.body.classList.add('has-custom-cursor');
+            }
+        }
+
+        function hideCursor() {
+            isCursorVisible = false;
+            cursor.style.opacity = '0';
+            cursorFollower.style.opacity = '0';
+            document.body.classList.remove('has-custom-cursor');
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            if (!hasInitializedCursor) {
+                followerX = mouseX;
+                followerY = mouseY;
+                hasInitializedCursor = true;
+            }
+
+            showCursor();
+        }, { passive: true });
+
+        document.addEventListener('mouseleave', () => {
+            hideCursor();
+        });
+
+        document.addEventListener('mouseenter', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            showCursor();
+        });
+
+        // Click / Mouse down effects
+        window.addEventListener('mousedown', (e) => {
+            if (e.button === 0) {
+                document.body.classList.add('cursor-clicking');
+            }
+        });
+
+        window.addEventListener('mouseup', () => {
+            document.body.classList.remove('cursor-clicking');
+        });
+
+        // Event delegation for hover states on all interactive elements
+        document.addEventListener('mouseover', (e) => {
+            const target = e.target.closest('a, button, input, select, textarea, .interactive-item, .spec-card, .material-btn, .journal-card, .gallery-card, .focus-pill, label, [role="button"]');
+            if (target) {
+                document.body.classList.add('cursor-hover');
+                if (target.matches('input[type="text"], input[type="email"], textarea')) {
+                    cursor.style.opacity = '0.2';
+                    cursorFollower.style.opacity = '0.2';
+                }
+            }
+        });
+
+        document.addEventListener('mouseout', (e) => {
+            const target = e.target.closest('a, button, input, select, textarea, .interactive-item, .spec-card, .material-btn, .journal-card, .gallery-card, .focus-pill, label, [role="button"]');
+            if (target) {
+                document.body.classList.remove('cursor-hover');
+                if (isCursorVisible) {
+                    cursor.style.opacity = '1';
+                    cursorFollower.style.opacity = '1';
+                }
+            }
+        });
+
+        // Touch device handling (mobile & tablet)
+        window.addEventListener('touchstart', () => {
+            hideCursor();
+        }, { passive: true });
+
+        // 4. Web Audio Synthesizer (Ambient Drone + Mechanical Tourbillon Tick)
+        class ChronosAudio {
+            constructor() {
+                this.ctx = null;
+                this.isPlaying = false;
+                this.droneGain = null;
+                this.tickGain = null;
+                this.intervalId = null;
+            }
+
+            init() {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                this.ctx = new AudioContext();
+
+                // Master bus
+                this.master = this.ctx.createGain();
+                this.master.gain.setValueAtTime(0.35, this.ctx.currentTime);
+                this.master.connect(this.ctx.destination);
+
+                // Ambient Drone generator
+                this.droneGain = this.ctx.createGain();
+                this.droneGain.gain.setValueAtTime(0.001, this.ctx.currentTime);
+
+                const filter = this.ctx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(260, this.ctx.currentTime);
+
+                const osc1 = this.ctx.createOscillator();
+                osc1.type = 'sawtooth';
+                osc1.frequency.setValueAtTime(55, this.ctx.currentTime);
+
+                const osc2 = this.ctx.createOscillator();
+                osc2.type = 'sine';
+                osc2.frequency.setValueAtTime(82.41, this.ctx.currentTime);
+
+                const osc3 = this.ctx.createOscillator();
+                osc3.type = 'sine';
+                osc3.frequency.setValueAtTime(164.81, this.ctx.currentTime);
+
+                osc1.connect(filter);
+                osc2.connect(filter);
+                osc3.connect(filter);
+
+                filter.connect(this.droneGain);
+                this.droneGain.connect(this.master);
+
+                osc1.start();
+                osc2.start();
+                osc3.start();
+
+                // Tourbillon Mechanical Tick Bus
+                this.tickGain = this.ctx.createGain();
+                this.tickGain.gain.setValueAtTime(0.28, this.ctx.currentTime);
+                this.tickGain.connect(this.master);
+            }
+
+            playTick() {
+                if (!this.ctx || !this.isPlaying) return;
+
+                const osc = this.ctx.createOscillator();
+                const gain = this.ctx.createGain();
+                const filter = this.ctx.createBiquadFilter();
+
+                filter.type = 'bandpass';
+                filter.frequency.value = 3200 + Math.random() * 400;
+                filter.Q.value = 8;
+
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(1400, this.ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.02);
+
+                gain.gain.setValueAtTime(0.12, this.ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.025);
+
+                osc.connect(filter);
+                filter.connect(gain);
+                gain.connect(this.tickGain);
+
+                osc.start();
+                osc.stop(this.ctx.currentTime + 0.03);
+            }
+
+            toggle() {
+                if (!this.ctx) this.init();
+
+                if (this.ctx.state === 'suspended') {
+                    this.ctx.resume();
+                }
+
+                this.isPlaying = !this.isPlaying;
+
+                if (this.isPlaying) {
+                    this.droneGain.gain.exponentialRampToValueAtTime(0.25, this.ctx.currentTime + 1.5);
+                    this.intervalId = setInterval(() => this.playTick(), 125); // 8 ticks/sec = 28,800 VPH
+                } else {
+                    this.droneGain.gain.exponentialRampToValueAtTime(0.0001, this.ctx.currentTime + 0.8);
+                    clearInterval(this.intervalId);
+                }
+
+                return this.isPlaying;
+            }
+        }
+
+        const chronosAudio = new ChronosAudio();
+        const audioBtn = document.getElementById('audio-toggle');
+        const audioText = document.getElementById('audio-state-text');
+
+        audioBtn.addEventListener('click', () => {
+            const active = chronosAudio.toggle();
+            audioText.textContent = active ? 'SOUND [ON]' : 'SOUND [OFF]';
+            audioBtn.classList.toggle('border-gold-400', active);
+            audioBtn.classList.toggle('shadow-[0_0_15px_rgba(201,160,54,0.3)]', active);
+        });
+
+        // 5. Mobile Navigation Drawer Handling
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileDrawer = document.getElementById('mobile-drawer');
+        const closeDrawerBtn = document.getElementById('close-drawer-btn');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+        const mobileInquireBtn = document.getElementById('mobile-inquire-btn');
+
+        function openDrawer() {
+            mobileDrawer.classList.remove('opacity-0', 'pointer-events-none');
+            mobileDrawer.classList.add('opacity-100', 'pointer-events-auto');
+            lenis.stop();
+        }
+
+        function closeDrawer() {
+            mobileDrawer.classList.add('opacity-0', 'pointer-events-none');
+            mobileDrawer.classList.remove('opacity-100', 'pointer-events-auto');
+            lenis.start();
+        }
+
+        mobileMenuBtn.addEventListener('click', openDrawer);
+        closeDrawerBtn.addEventListener('click', closeDrawer);
+        mobileNavLinks.forEach(link => link.addEventListener('click', closeDrawer));
+
+        // 6. Mobile View Mode Switcher (3D vs Gallery)
+        const switch3D = document.getElementById('switch-view-3d');
+        const switchGallery = document.getElementById('switch-view-gallery');
+        const canvasContainer = document.getElementById('canvas-container');
+
+        if (switch3D && switchGallery) {
+            switch3D.addEventListener('click', () => {
+                switch3D.classList.add('bg-gold-400', 'text-obsidian', 'font-bold');
+                switch3D.classList.remove('text-gray-400');
+                switchGallery.classList.remove('bg-gold-400', 'text-obsidian', 'font-bold');
+                switchGallery.classList.add('text-gray-400');
+                canvasContainer.style.opacity = '1';
+                lenis.scrollTo('#hero', { duration: 1 });
+            });
+
+            switchGallery.addEventListener('click', () => {
+                switchGallery.classList.add('bg-gold-400', 'text-obsidian', 'font-bold');
+                switchGallery.classList.remove('text-gray-400');
+                switch3D.classList.remove('bg-gold-400', 'text-obsidian', 'font-bold');
+                switch3D.classList.add('text-gray-400');
+                lenis.scrollTo('#gallery', { duration: 1.2 });
+            });
+        }
+
+        // 7. Interactive Modal Management
+        const reserveModal = document.getElementById('reserve-modal');
+        const openReserveBtn = document.getElementById('open-reserve-btn');
+        const footerReserveBtn = document.getElementById('footer-reserve-btn');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const inquiryForm = document.getElementById('inquiry-form');
+        const formSuccess = document.getElementById('form-success');
+
+        function openModal() {
+            closeDrawer();
+            reserveModal.classList.remove('opacity-0', 'pointer-events-none');
+            reserveModal.classList.add('opacity-100', 'pointer-events-auto');
+            lenis.stop();
+        }
+
+        function closeModal() {
+            reserveModal.classList.add('opacity-0', 'pointer-events-none');
+            reserveModal.classList.remove('opacity-100', 'pointer-events-auto');
+            lenis.start();
+        }
+
+        openReserveBtn.addEventListener('click', openModal);
+        footerReserveBtn.addEventListener('click', openModal);
+        mobileInquireBtn.addEventListener('click', openModal);
+        closeModalBtn.addEventListener('click', closeModal);
+        reserveModal.addEventListener('click', (e) => {
+            if (e.target === reserveModal) closeModal();
+        });
+
+        inquiryForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            inquiryForm.classList.add('hidden');
+            formSuccess.classList.remove('hidden');
+            setTimeout(() => {
+                closeModal();
+                setTimeout(() => {
+                    inquiryForm.classList.remove('hidden');
+                    formSuccess.classList.add('hidden');
+                    inquiryForm.reset();
+                }, 500);
+            }, 3000);
+        });
+
+        // 8. Gallery Lightbox Handling
+        const lightbox = document.getElementById('gallery-lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxTitle = document.getElementById('lightbox-title');
+        const lightboxSubtitle = document.getElementById('lightbox-subtitle');
+        const closeLightboxBtn = document.getElementById('close-lightbox-btn');
+
+        document.querySelectorAll('.gallery-card').forEach(card => {
+            card.addEventListener('click', () => {
+                lightboxImg.src = card.dataset.img;
+                lightboxTitle.textContent = card.dataset.title;
+                lightboxSubtitle.textContent = card.dataset.subtitle;
+                lightbox.classList.remove('opacity-0', 'pointer-events-none');
+                lightbox.classList.add('opacity-100', 'pointer-events-auto');
+                lenis.stop();
+            });
+        });
+
+        function closeLightbox() {
+            lightbox.classList.add('opacity-0', 'pointer-events-none');
+            lightbox.classList.remove('opacity-100', 'pointer-events-auto');
+            lenis.start();
+        }
+        closeLightboxBtn.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) closeLightbox();
+        });
+
+        // 9. THREE.JS 3D LUXURY SKELETON WATCH IMPLEMENTATION
+        const container = document.getElementById('canvas-container');
+        const loadingBar = document.getElementById('loading-bar');
+        const modelLoader = document.getElementById('model-loader');
+        const interactionHint = document.getElementById('interaction-hint');
+
+        // Scene, Camera, Renderer
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x050507, 0.04);
+
+        const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 100);
+        camera.position.set(0, 0, 9);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.35;
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        container.appendChild(renderer.domElement);
+
+        // Studio Lighting Setup
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+
+        // Key Light (Warm Rose Gold Accent)
+        const keyLight = new THREE.DirectionalLight(0xffeedd, 3.2);
+        keyLight.position.set(5, 7, 6);
+        keyLight.castShadow = true;
+        scene.add(keyLight);
+
+        // Rim Light (Cold Platinum Highlighting edges)
+        const rimLight = new THREE.DirectionalLight(0x88bbff, 2.8);
+        rimLight.position.set(-6, -4, -3);
+        scene.add(rimLight);
+
+        // Top Spotlight for Bevel Reflections
+        const topSpot = new THREE.SpotLight(0xffffff, 2.5, 20, Math.PI / 4, 0.5, 1);
+        topSpot.position.set(0, 8, 4);
+        scene.add(topSpot);
+
+        // Point Light focused on Tourbillon Ruby
+        const rubyPoint = new THREE.PointLight(0xff2266, 1.5, 4);
+        rubyPoint.position.set(0, -1.2, 0.6);
+        scene.add(rubyPoint);
+
+        // MATERIALS
+        const matRoseGold = new THREE.MeshStandardMaterial({
+            color: 0xE8A87C,
+            metalness: 0.94,
+            roughness: 0.18,
+            envMapIntensity: 2.2
+        });
+
+        const matTitanium = new THREE.MeshStandardMaterial({
+            color: 0x6E7887,
+            metalness: 0.9,
+            roughness: 0.32,
+            envMapIntensity: 1.5
+        });
+
+        const matDarkGunmetal = new THREE.MeshStandardMaterial({
+            color: 0x1A1B22,
+            metalness: 0.85,
+            roughness: 0.35
+        });
+
+        const matCeramicBezel = new THREE.MeshStandardMaterial({
+            color: 0x090A0D,
+            metalness: 0.2,
+            roughness: 0.12,
+            clearcoat: 1.0,
+            clearcoatRoughness: 0.05
+        });
+
+        const matSapphireCrystal = new THREE.MeshPhysicalMaterial({
+            color: 0xffffff,
+            transmission: 0.94,
+            opacity: 1,
+            transparent: true,
+            roughness: 0.04,
+            ior: 1.77,
+            thickness: 0.6,
+            specularIntensity: 1.2
+        });
+
+        const matRuby = new THREE.MeshPhysicalMaterial({
+            color: 0xE0115F,
+            transmission: 0.7,
+            transparent: true,
+            roughness: 0.1,
+            ior: 1.76,
+            emissive: 0x550015,
+            emissiveIntensity: 0.4
+        });
+
+        const matBluedSteel = new THREE.MeshStandardMaterial({
+            color: 0x1B3B6F,
+            metalness: 0.9,
+            roughness: 0.15
+        });
+
+        // 3D WATCH HIERARCHY FOR EXPLODED VIEW
+        const watchMasterGroup = new THREE.Group();
+        scene.add(watchMasterGroup);
+
+        const partCrystalFront = new THREE.Group();
+        const partBezelGroup = new THREE.Group();
+        const partChapterDial = new THREE.Group();
+        const partHandsGroup = new THREE.Group();
+        const partUpperBridges = new THREE.Group();
+        const partGearsGroup = new THREE.Group();
+        const partTourbillonAssembly = new THREE.Group();
+        const partMainplate = new THREE.Group();
+        const partCaseAndLugs = new THREE.Group();
+        const partCrystalBack = new THREE.Group();
+
+        watchMasterGroup.add(partCaseAndLugs);
+        watchMasterGroup.add(partMainplate);
+        watchMasterGroup.add(partGearsGroup);
+        watchMasterGroup.add(partTourbillonAssembly);
+        watchMasterGroup.add(partUpperBridges);
+        watchMasterGroup.add(partHandsGroup);
+        watchMasterGroup.add(partChapterDial);
+        watchMasterGroup.add(partBezelGroup);
+        watchMasterGroup.add(partCrystalFront);
+        watchMasterGroup.add(partCrystalBack);
+
+        // 1. FRONT SAPPHIRE CRYSTAL
+        const crystalGeo = new THREE.CylinderGeometry(2.32, 2.32, 0.12, 64);
+        const crystalMesh = new THREE.Mesh(crystalGeo, matSapphireCrystal);
+        crystalMesh.rotation.x = Math.PI / 2;
+        crystalMesh.position.z = 0.58;
+        partCrystalFront.add(crystalMesh);
+
+        // 2. CERAMIC BEZEL & TITANIUM REHANT
+        const bezelGeo = new THREE.TorusGeometry(2.36, 0.18, 24, 72);
+        const bezelMesh = new THREE.Mesh(bezelGeo, matCeramicBezel);
+        bezelMesh.position.z = 0.52;
+        partBezelGroup.add(bezelMesh);
+
+        for (let i = 0; i < 8; i++) {
+            const angle = (i / 8) * Math.PI * 2;
+            const screwGeo = new THREE.CylinderGeometry(0.045, 0.045, 0.06, 6);
+            const screw = new THREE.Mesh(screwGeo, matRoseGold);
+            screw.rotation.x = Math.PI / 2;
+            screw.position.set(Math.cos(angle) * 2.36, Math.sin(angle) * 2.36, 0.6);
+            partBezelGroup.add(screw);
+        }
+
+        // 3. CHAPTER RING & FLOATING INDICES
+        const ringGeo = new THREE.RingGeometry(2.05, 2.22, 64);
+        const ringMesh = new THREE.Mesh(ringGeo, matDarkGunmetal);
+        ringMesh.position.z = 0.44;
+        partChapterDial.add(ringMesh);
+
+        for (let i = 0; i < 12; i++) {
+            const angle = (i / 12) * Math.PI * 2;
+            const markerLength = i % 3 === 0 ? 0.22 : 0.14;
+            const markerGeo = new THREE.BoxGeometry(0.04, markerLength, 0.05);
+            const marker = new THREE.Mesh(markerGeo, matRoseGold);
+            marker.position.set(Math.cos(angle) * 2.12, Math.sin(angle) * 2.12, 0.46);
+            marker.rotation.z = angle + Math.PI / 2;
+            partChapterDial.add(marker);
+        }
+
+        // 4. SKELETONIZED BRIDGES
+        function createSkeletonBridge(points, thickness = 0.1) {
+            const shape = new THREE.Shape();
+            shape.moveTo(points[0].x, points[0].y);
+            for (let i = 1; i < points.length; i++) {
+                shape.lineTo(points[i].x, points[i].y);
+            }
+            shape.closePath();
+
+            const extrudeSettings = {
+                depth: thickness,
+                bevelEnabled: true,
+                bevelSegments: 4,
+                steps: 1,
+                bevelSize: 0.03,
+                bevelThickness: 0.03
+            };
+            const geo = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+            return new THREE.Mesh(geo, matRoseGold);
+        }
+
+        const bridge1 = createSkeletonBridge([
+            { x: -1.4, y: 1.6 },
+            { x: 1.4, y: 1.6 },
+            { x: 0.8, y: 0.8 },
+            { x: -0.8, y: 0.8 }
+        ], 0.08);
+        bridge1.position.z = 0.28;
+        partUpperBridges.add(bridge1);
+
+        const bridge2 = createSkeletonBridge([
+            { x: -1.8, y: -0.2 },
+            { x: -0.5, y: -0.8 },
+            { x: -0.5, y: -1.6 },
+            { x: -1.6, y: -1.2 }
+        ], 0.08);
+        bridge2.position.z = 0.28;
+        partUpperBridges.add(bridge2);
+
+        const bridge3 = createSkeletonBridge([
+            { x: 1.8, y: -0.2 },
+            { x: 1.6, y: -1.2 },
+            { x: 0.5, y: -1.6 },
+            { x: 0.5, y: -0.8 }
+        ], 0.08);
+        bridge3.position.z = 0.28;
+        partUpperBridges.add(bridge3);
+
+        const rubies = [
+            { x: 0, y: 1.2, z: 0.38 },
+            { x: 0.7, y: 0.2, z: 0.38 },
+            { x: -0.6, y: -0.4, z: 0.38 },
+            { x: 0, y: -1.15, z: 0.38 }
+        ];
+        rubies.forEach(r => {
+            const rubyGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.06, 16);
+            const rubyMesh = new THREE.Mesh(rubyGeo, matRuby);
+            rubyMesh.rotation.x = Math.PI / 2;
+            rubyMesh.position.set(r.x, r.y, r.z);
+            partUpperBridges.add(rubyMesh);
+        });
+
+        // 5. GEAR TRAIN
+        const gearObjects = [];
+
+        function createGear(radius, teethCount, thickness, material) {
+            const gearGroup = new THREE.Group();
+            
+            const coreGeo = new THREE.CylinderGeometry(radius * 0.9, radius * 0.9, thickness, 32);
+            const core = new THREE.Mesh(coreGeo, material);
+            core.rotation.x = Math.PI / 2;
+            gearGroup.add(core);
+
+            const innerRingGeo = new THREE.TorusGeometry(radius * 0.5, 0.03, 8, 24);
+            const innerRing = new THREE.Mesh(innerRingGeo, matTitanium);
+            gearGroup.add(innerRing);
+
+            for (let i = 0; i < teethCount; i++) {
+                const angle = (i / teethCount) * Math.PI * 2;
+                const toothGeo = new THREE.BoxGeometry(0.03, radius * 0.22, thickness * 0.95);
+                const tooth = new THREE.Mesh(toothGeo, material);
+                tooth.position.set(Math.cos(angle) * radius, Math.sin(angle) * radius, 0);
+                tooth.rotation.z = angle + Math.PI / 2;
+                gearGroup.add(tooth);
+            }
+
+            return gearGroup;
+        }
+
+        const gear1 = createGear(0.9, 36, 0.08, matRoseGold);
+        gear1.position.set(0, 1.15, 0.15);
+        partGearsGroup.add(gear1);
+        gearObjects.push({ mesh: gear1, speed: 0.002 });
+
+        const gear2 = createGear(0.65, 28, 0.06, matRoseGold);
+        gear2.position.set(0.6, 0.25, 0.12);
+        partGearsGroup.add(gear2);
+        gearObjects.push({ mesh: gear2, speed: -0.005 });
+
+        const gear3 = createGear(0.48, 20, 0.05, matRoseGold);
+        gear3.position.set(-0.5, 0.35, 0.1);
+        partGearsGroup.add(gear3);
+        gearObjects.push({ mesh: gear3, speed: 0.008 });
+
+        const gear4 = createGear(0.35, 16, 0.05, matRoseGold);
+        gear4.position.set(-0.4, -0.45, 0.1);
+        partGearsGroup.add(gear4);
+        gearObjects.push({ mesh: gear4, speed: -0.015 });
+
+        // 6. FLYING TOURBILLON ASSEMBLY
+        const tourbillonCage = new THREE.Group();
+        tourbillonCage.position.set(0, -1.15, 0.2);
+        partTourbillonAssembly.add(tourbillonCage);
+
+        for (let i = 0; i < 3; i++) {
+            const angle = (i / 3) * Math.PI * 2;
+            const armGeo = new THREE.BoxGeometry(0.03, 0.65, 0.04);
+            const arm = new THREE.Mesh(armGeo, matTitanium);
+            arm.position.set(Math.cos(angle) * 0.3, Math.sin(angle) * 0.3, 0);
+            arm.rotation.z = angle;
+            tourbillonCage.add(arm);
+        }
+
+        const balanceRingGeo = new THREE.TorusGeometry(0.55, 0.03, 12, 36);
+        const balanceWheel = new THREE.Mesh(balanceRingGeo, matRoseGold);
+        tourbillonCage.add(balanceWheel);
+
+        for (let i = 0; i < 6; i++) {
+            const angle = (i / 6) * Math.PI * 2;
+            const weightGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.05, 8);
+            const weight = new THREE.Mesh(weightGeo, matRoseGold);
+            weight.rotation.x = Math.PI / 2;
+            weight.position.set(Math.cos(angle) * 0.55, Math.sin(angle) * 0.55, 0);
+            tourbillonCage.add(weight);
+        }
+
+        const spiralCurve = new THREE.Curve();
+        spiralCurve.getPoint = function (t) {
+            const turns = 4;
+            const angle = t * Math.PI * 2 * turns;
+            const radius = 0.08 + t * 0.32;
+            return new THREE.Vector3(Math.cos(angle) * radius, Math.sin(angle) * radius, 0.02);
+        };
+        const hairspringGeo = new THREE.TubeGeometry(spiralCurve, 64, 0.01, 6, false);
+        const hairspring = new THREE.Mesh(hairspringGeo, matBluedSteel);
+        tourbillonCage.add(hairspring);
+
+        const tourbillonJewel = new THREE.Mesh(new THREE.SphereGeometry(0.07, 16, 16), matRuby);
+        tourbillonJewel.position.z = 0.04;
+        tourbillonCage.add(tourbillonJewel);
+
+        const secHandGeo = new THREE.BoxGeometry(0.025, 0.45, 0.02);
+        const secHand = new THREE.Mesh(secHandGeo, matBluedSteel);
+        secHand.position.set(0, 0.22, 0.06);
+        tourbillonCage.add(secHand);
+
+        // 7. SKELETONIZED HANDS
+        const handsPivot = new THREE.Group();
+        handsPivot.position.set(0, 0, 0.48);
+        partHandsGroup.add(handsPivot);
+
+        const hourHandGeo = new THREE.ConeGeometry(0.09, 1.2, 4);
+        const hourHand = new THREE.Mesh(hourHandGeo, matRoseGold);
+        hourHand.position.set(0, 0.55, 0);
+        const hourGroup = new THREE.Group();
+        hourGroup.add(hourHand);
+        hourGroup.rotation.z = -Math.PI / 3;
+        handsPivot.add(hourGroup);
+
+        const minuteHandGeo = new THREE.ConeGeometry(0.08, 1.7, 4);
+        const minuteHand = new THREE.Mesh(minuteHandGeo, matRoseGold);
+        minuteHand.position.set(0, 0.8, 0.03);
+        const minuteGroup = new THREE.Group();
+        minuteGroup.add(minuteHand);
+        minuteGroup.rotation.z = Math.PI / 4;
+        handsPivot.add(minuteGroup);
+
+        const centerPinGeo = new THREE.CylinderGeometry(0.1, 0.1, 0.08, 24);
+        const centerPin = new THREE.Mesh(centerPinGeo, matRoseGold);
+        centerPin.rotation.x = Math.PI / 2;
+        centerPin.position.z = 0.04;
+        handsPivot.add(centerPin);
+
+        // 8. MAINPLATE & CASE
+        const plateGeo = new THREE.CylinderGeometry(2.18, 2.18, 0.1, 64);
+        const plateMesh = new THREE.Mesh(plateGeo, matDarkGunmetal);
+        plateMesh.rotation.x = Math.PI / 2;
+        plateMesh.position.z = 0;
+        partMainplate.add(plateMesh);
+
+        const caseBodyGeo = new THREE.CylinderGeometry(2.45, 2.45, 0.55, 64);
+        const caseBody = new THREE.Mesh(caseBodyGeo, matTitanium);
+        caseBody.rotation.x = Math.PI / 2;
+        caseBody.position.z = 0.15;
+        partCaseAndLugs.add(caseBody);
+
+        const lugCoords = [
+            { x: -1.6, y: 2.2, rz: 0.3 },
+            { x: 1.6, y: 2.2, rz: -0.3 },
+            { x: -1.6, y: -2.2, rz: -0.3 },
+            { x: 1.6, y: -2.2, rz: 0.3 }
+        ];
+        lugCoords.forEach(c => {
+            const lugGeo = new THREE.BoxGeometry(0.35, 1.1, 0.45);
+            const lug = new THREE.Mesh(lugGeo, matTitanium);
+            lug.position.set(c.x, c.y, 0.15);
+            lug.rotation.z = c.rz;
+            partCaseAndLugs.add(lug);
+        });
+
+        const crownGeo = new THREE.CylinderGeometry(0.24, 0.24, 0.35, 24);
+        const crownMesh = new THREE.Mesh(crownGeo, matRoseGold);
+        crownMesh.position.set(2.6, 0, 0.15);
+        crownMesh.rotation.z = Math.PI / 2;
+        partCaseAndLugs.add(crownMesh);
+
+        const crownRuby = new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), matRuby);
+        crownRuby.position.set(2.78, 0, 0.15);
+        partCaseAndLugs.add(crownRuby);
+
+        const backCrystal = new THREE.Mesh(crystalGeo, matSapphireCrystal);
+        backCrystal.rotation.x = Math.PI / 2;
+        backCrystal.position.z = -0.15;
+        partCrystalBack.add(backCrystal);
+
+        watchMasterGroup.rotation.x = 0.15;
+        watchMasterGroup.rotation.y = -0.25;
+
+        // Progressive Loading
+        let loadProgress = 0;
+        const progressTimer = setInterval(() => {
+            loadProgress += 20;
+            loadingBar.style.width = Math.min(loadProgress, 100) + '%';
+            if (loadProgress >= 100) {
+                clearInterval(progressTimer);
+                setTimeout(() => {
+                    modelLoader.classList.add('opacity-0', 'pointer-events-none');
+                    interactionHint.classList.remove('opacity-0');
+                    setTimeout(() => interactionHint.classList.add('opacity-0'), 4000);
+                }, 300);
+            }
+        }, 50);
+
+        // 10. INTERACTIVE MOUSE ROTATION (DRAG & MOMENTUM)
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        let targetRotationX = 0.15;
+        let targetRotationY = -0.25;
+        let currentRotationX = 0.15;
+        let currentRotationY = -0.25;
+        let autoRotateActive = true;
+
+        const onPointerDown = (e) => {
+            if (e.target.closest('header, nav, button, a, form, input, select, textarea, .interactive-item, #reserve-modal, #gallery-lightbox, #mobile-drawer')) return;
+            isDragging = true;
+            autoRotateActive = false;
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+            document.body.classList.add('cursor-dragging');
+        };
+
+        const onPointerMove = (e) => {
+            if (!isDragging) return;
+            const deltaX = e.clientX - previousMousePosition.x;
+            const deltaY = e.clientY - previousMousePosition.y;
+
+            targetRotationY += deltaX * 0.005;
+            targetRotationX += deltaY * 0.005;
+
+            previousMousePosition = { x: e.clientX, y: e.clientY };
+        };
+
+        const onPointerUp = () => {
+            isDragging = false;
+            document.body.classList.remove('cursor-dragging');
+        };
+
+        window.addEventListener('pointerdown', onPointerDown);
+        window.addEventListener('pointermove', onPointerMove);
+        window.addEventListener('pointerup', onPointerUp);
+
+        // Mobile touch support
+        window.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 1 && !e.target.closest('header, button, a, form, input, select, #reserve-modal, #mobile-drawer')) {
+                isDragging = true;
+                autoRotateActive = false;
+                previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            }
+        }, { passive: true });
+
+        window.addEventListener('touchmove', (e) => {
+            if (!isDragging || e.touches.length !== 1) return;
+            const deltaX = e.touches[0].clientX - previousMousePosition.x;
+            const deltaY = e.touches[0].clientY - previousMousePosition.y;
+
+            targetRotationY += deltaX * 0.006;
+            targetRotationX += deltaY * 0.006;
+
+            previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        }, { passive: true });
+
+        window.addEventListener('touchend', onPointerUp);
+
+        // 11. COMPLICATION QUICK INSPECTION TARGETING
+        document.querySelectorAll('.focus-pill').forEach(pill => {
+            pill.addEventListener('click', () => {
+                const type = pill.dataset.focus;
+                autoRotateActive = false;
+
+                if (type === 'tourbillon') {
+                    gsap.to(camera.position, { x: 0, y: -0.9, z: 5.2, duration: 1.2, ease: 'power2.inOut' });
+                    gsap.to(watchMasterGroup.rotation, { x: 0.1, y: 0.05, duration: 1.2, ease: 'power2.inOut' });
+                } else if (type === 'barrel') {
+                    gsap.to(camera.position, { x: 0, y: 1.0, z: 5.5, duration: 1.2, ease: 'power2.inOut' });
+                    gsap.to(watchMasterGroup.rotation, { x: 0.25, y: -0.15, duration: 1.2, ease: 'power2.inOut' });
+                } else if (type === 'crown') {
+                    gsap.to(camera.position, { x: 1.6, y: 0, z: 5.2, duration: 1.2, ease: 'power2.inOut' });
+                    gsap.to(watchMasterGroup.rotation, { x: 0.05, y: -0.9, duration: 1.2, ease: 'power2.inOut' });
+                } else if (type === 'reset') {
+                    autoRotateActive = true;
+                    gsap.to(camera.position, { x: 0, y: 0, z: 9.0, duration: 1.2, ease: 'power2.inOut' });
+                    gsap.to(watchMasterGroup.rotation, { x: 0.15, y: -0.25, duration: 1.2, ease: 'power2.inOut' });
+                }
+            });
+        });
+
+        // 12. GSAP SCROLLTRIGGER ORCHESTRATION
+        const scrollTimeline = gsap.timeline({
+            scrollTrigger: {
+                trigger: 'body',
+                start: 'top top',
+                end: 'bottom bottom',
+                scrub: 1.2
+            }
+        });
+
+        // SECTION 1 -> 2: HERO TO SPECIFICATIONS
+        scrollTimeline
+            .to(camera.position, {
+                x: 1.2,
+                y: -0.2,
+                z: 6.8,
+                ease: 'power2.inOut'
+            }, 0)
+            .to(watchMasterGroup.rotation, {
+                x: 0.35,
+                y: -0.65,
+                z: 0.1,
+                ease: 'power2.inOut'
+            }, 0);
+
+        // SECTION 2 -> 3: CALIBER BALANCE (EXPLODED VIEW)
+        scrollTimeline
+            .to(camera.position, {
+                x: 0,
+                y: 0,
+                z: 9.8,
+                ease: 'power2.inOut'
+            }, 0.28)
+            .to(watchMasterGroup.rotation, {
+                x: 0.55,
+                y: 0.85,
+                z: -0.2,
+                ease: 'power2.inOut'
+            }, 0.28)
+            .to(partCrystalFront.position, { z: 2.8, ease: 'power2.out' }, 0.32)
+            .to(partBezelGroup.position, { z: 2.2, ease: 'power2.out' }, 0.32)
+            .to(partChapterDial.position, { z: 1.6, ease: 'power2.out' }, 0.32)
+            .to(partHandsGroup.position, { z: 1.2, ease: 'power2.out' }, 0.32)
+            .to(partUpperBridges.position, { z: 0.8, ease: 'power2.out' }, 0.32)
+            .to(partTourbillonAssembly.position, { z: 0.6, ease: 'power2.out' }, 0.32)
+            .to(partGearsGroup.position, { z: 0.25, ease: 'power2.out' }, 0.32)
+            .to(partCaseAndLugs.position, { z: -0.8, ease: 'power2.out' }, 0.32)
+            .to(partCrystalBack.position, { z: -1.8, ease: 'power2.out' }, 0.32);
+
+        // SECTION 3 -> 4: MATERIALS (Re-converge and close up)
+        scrollTimeline
+            .to(partCrystalFront.position, { z: 0, ease: 'power2.inOut' }, 0.55)
+            .to(partBezelGroup.position, { z: 0, ease: 'power2.inOut' }, 0.55)
+            .to(partChapterDial.position, { z: 0, ease: 'power2.inOut' }, 0.55)
+            .to(partHandsGroup.position, { z: 0, ease: 'power2.inOut' }, 0.55)
+            .to(partUpperBridges.position, { z: 0, ease: 'power2.inOut' }, 0.55)
+            .to(partTourbillonAssembly.position, { z: 0, ease: 'power2.inOut' }, 0.55)
+            .to(partGearsGroup.position, { z: 0, ease: 'power2.inOut' }, 0.55)
+            .to(partCaseAndLugs.position, { z: 0, ease: 'power2.inOut' }, 0.55)
+            .to(partCrystalBack.position, { z: 0, ease: 'power2.inOut' }, 0.55)
+            .to(camera.position, {
+                x: -1.6,
+                y: -0.6,
+                z: 6.2,
+                ease: 'power2.inOut'
+            }, 0.55)
+            .to(watchMasterGroup.rotation, {
+                x: 0.2,
+                y: 0.5,
+                z: -0.1,
+                ease: 'power2.inOut'
+            }, 0.55);
+
+        // SECTION 4 -> 5: GALLERY & JOURNAL & FOOTER
+        scrollTimeline
+            .to(camera.position, {
+                x: 0,
+                y: 1.0,
+                z: 8.5,
+                ease: 'power2.inOut'
+            }, 0.8)
+            .to(watchMasterGroup.rotation, {
+                x: 0.1,
+                y: -0.2,
+                z: 0.05,
+                ease: 'power2.inOut'
+            }, 0.8);
+
+        // Spec cards reveal
+        gsap.utils.toArray('.spec-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                },
+                x: -50,
+                opacity: 0,
+                duration: 0.8,
+                delay: i * 0.15,
+                ease: 'power3.out'
+            });
+        });
+
+        // Exploded annotations reveal
+        gsap.utils.toArray('.exploded-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 85%',
+                    toggleActions: 'play none none reverse'
+                },
+                y: 40,
+                opacity: 0,
+                duration: 0.8,
+                delay: i * 0.15,
+                ease: 'power3.out'
+            });
+        });
+
+        // Journal cards stagger reveal
+        gsap.utils.toArray('.journal-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: {
+                    trigger: card,
+                    start: 'top 90%',
+                    toggleActions: 'play none none reverse'
+                },
+                y: 50,
+                opacity: 0,
+                duration: 0.8,
+                delay: i * 0.15,
+                ease: 'power3.out'
+            });
+        });
+
+        // 13. MATERIAL SELECTOR LIGHTING HIGHLIGHTS
+        const materialButtons = document.querySelectorAll('.material-btn');
+        materialButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                materialButtons.forEach(b => {
+                    b.classList.remove('glass-panel-gold', 'border-gold-500/40', 'active');
+                    b.classList.add('glass-panel', 'border-white/5');
+                });
+                btn.classList.add('glass-panel-gold', 'border-gold-500/40', 'active');
+                btn.classList.remove('glass-panel', 'border-white/5');
+
+                const matType = btn.dataset.material;
+                if (matType === 'gold') {
+                    gsap.to(keyLight.color, { r: 1, g: 0.88, b: 0.65, duration: 0.8 });
+                    gsap.to(keyLight, { intensity: 4.5, duration: 0.8 });
+                    gsap.to(watchMasterGroup.rotation, { y: 0.4, x: 0.25, duration: 1.2 });
+                } else if (matType === 'titanium') {
+                    gsap.to(keyLight.color, { r: 0.75, g: 0.85, b: 1, duration: 0.8 });
+                    gsap.to(keyLight, { intensity: 3.5, duration: 0.8 });
+                    gsap.to(watchMasterGroup.rotation, { y: -0.6, x: 0.15, duration: 1.2 });
+                } else if (matType === 'sapphire') {
+                    gsap.to(keyLight.color, { r: 0.8, g: 0.95, b: 1, duration: 0.8 });
+                    gsap.to(topSpot, { intensity: 4.8, duration: 0.8 });
+                    gsap.to(watchMasterGroup.rotation, { y: 0.1, x: 0.55, duration: 1.2 });
+                }
+            });
+        });
+
+        // 14. ANIMATION RENDER LOOP (Kinematics & 60s Tourbillon)
+        let clock = new THREE.Clock();
+
+        function renderLoop() {
+            requestAnimationFrame(renderLoop);
+
+            const elapsedTime = clock.getElapsedTime();
+
+            // 1. Tourbillon Cage 60s Rotation (1 turn per 60s)
+            tourbillonCage.rotation.z = (elapsedTime * (Math.PI * 2 / 60));
+
+            // 2. High-Frequency Balance Wheel Oscillation (28,800 VPH = 4 Hz = 8 beats per sec)
+            balanceWheel.rotation.z = Math.sin(elapsedTime * Math.PI * 8) * 0.45;
+            hairspring.rotation.z = Math.sin(elapsedTime * Math.PI * 8) * 0.35;
+
+            // 3. Gear Train Rotation
+            gearObjects.forEach(item => {
+                item.mesh.rotation.z += item.speed;
+            });
+
+            // 4. Timekeeping Dauphine Hands
+            minuteGroup.rotation.z += 0.00008;
+            hourGroup.rotation.z += 0.00008 / 12;
+
+            // 5. User Drag Damping / Auto-Rotate
+            if (autoRotateActive) {
+                targetRotationY += 0.0012;
+            }
+
+            currentRotationX += (targetRotationX - currentRotationX) * 0.08;
+            currentRotationY += (targetRotationY - currentRotationY) * 0.08;
+
+            if (isDragging || Math.abs(targetRotationX - currentRotationX) > 0.001) {
+                watchMasterGroup.rotation.x = currentRotationX;
+                watchMasterGroup.rotation.y = currentRotationY;
+            }
+
+            renderer.render(scene, camera);
+        }
+        renderLoop();
+
+        // 15. RESIZE HANDLER
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            ScrollTrigger.refresh();
+        });
+    </script>
+</body>
+</html>
